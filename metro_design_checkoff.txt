@@ -1,0 +1,57 @@
+Name:
+utln:        
+
+Answer the questions below, and submit your answers under the assignment
+"MetroSim Design Checkoff" on Gradescope. You must sign up for a design
+checkoff slot with a TA to discuss your provided answers (see spec for link).
+
+Unless otherwise specified, your answers below should be *brief*: no more
+than three sentences/question.
+
+        
+1. Are you comfortable with reading from stdin (user input) and a text file 
+in C++? Are you comfortable reading different types (e.g. ints and strings)?
+For this one, don't just answer 'yes' if you are. Write out which data 
+types you will need and which functions you will call. 
+
+Answer: 
+
+2. What happens when I move the train (with 'm m') when the train is at the
+last provided station? 
+
+Answer: 
+
+3. What classes will you need in your program? What interfaces (i.e. 
+functions) do they each provide? 
+
+Answer: 
+
+4. How will you implement add a passenger to a station? How will this 
+impact the data structure(s) you use to represent the stations in the 
+simulation? 
+
+Answer: 
+
+5. How will you implement moving a train from one station into the next? 
+How will you put passengers onto the train? How will you take off the
+correct passengers who are leaving at the next station? How will these 
+considerations impact the data structure(s) you use to represent the 
+train in the simulation? 
+
+Answer: 
+
+6. Does command behavior change based on the source of commands? 
+Based on your answer, how could we modularize our command processing
+code? Be as detailed as you can.
+
+Answer: 
+
+7. How do you plan to test your program? What evidence of testing do
+you plan to submit? 
+
+Answer: 
+
+8. What is your timeline for completing this project? What would you like 
+to have completed, and by which dates?   
+
+Answer: 
