@@ -1,5 +1,5 @@
-Name:
-utln:        
+Name: Tadhg Murray
+utln: tmurra01 
 
 Answer the questions below, and submit your answers under the assignment
 "MetroSim Design Checkoff" on Gradescope. You must sign up for a design
@@ -14,23 +14,35 @@ in C++? Are you comfortable reading different types (e.g. ints and strings)?
 For this one, don't just answer 'yes' if you are. Write out which data 
 types you will need and which functions you will call. 
 
-Answer: 
+Answer: I'm comfortable reading from user input because I know how to use the
+iostream library to std::cin user input. I'm also comfortable reading from 
+text files by using std::ifstream from the fstream library. I know how to use
+extraction operators to read from these sources, which will help in reading
+the different types.
 
 2. What happens when I move the train (with 'm m') when the train is at the
 last provided station? 
 
-Answer: 
+Answer: The train will wrap around from the last station to the first station.
 
 3. What classes will you need in your program? What interfaces (i.e. 
 functions) do they each provide? 
 
-Answer: 
+Answer: I will need classes for Passenger, PassengerQueue, Station, Train, 
+and a main class MetroSim. These classes will provide 
+interfaces for adding/removing passengers, boarding and unboarding the 
+train, and advancing the simulation. Internally, I will use the vector class
+to store stations and passengers.
 
 4. How will you implement add a passenger to a station? How will this 
 impact the data structure(s) you use to represent the stations in the 
 simulation? 
 
-Answer: 
+Answer: Each station will store a PassengerQueue, and adding a passenger 
+means adding them into that station’s queue. This requires the 
+station class to provide a function that adds a passenger to its queue. 
+The station data structure must therefore maintain and manage its own passenger 
+queue so will need functions like that.
 
 5. How will you implement moving a train from one station into the next? 
 How will you put passengers onto the train? How will you take off the
@@ -38,20 +50,35 @@ correct passengers who are leaving at the next station? How will these
 considerations impact the data structure(s) you use to represent the 
 train in the simulation? 
 
-Answer: 
+Answer: The train will track its current station index and advance to the 
+next station. Passengers are added to the train from 
+the station’s PassengerQueue, and passengers whose destination matches the 
+current station are removed from the train. This requires the train to store 
+a dynamic collection of passengers, which I will use a vector for.
 
 6. Does command behavior change based on the source of commands? 
 Based on your answer, how could we modularize our command processing
 code? Be as detailed as you can.
 
-Answer: 
+Answer: Command behavior does not change based on whether commands 
+come from a file or stdin. We can modularize command 
+processing by having a single function that executes commands.
+Only inputting the data is different,
+because one is in real-time and has to keep asking for user input, while
+the other one is just reading from a file one time.
+
 
 7. How do you plan to test your program? What evidence of testing do
 you plan to submit? 
 
-Answer: 
+Answer: I plan to test the functions using unit testing, and I will
+submit evidence of this file to gradescope. I will test the private
+functions implicitely using the public functions of each class.
+I plan to also diff the program compared to the reference output.
 
 8. What is your timeline for completing this project? What would you like 
 to have completed, and by which dates?   
 
-Answer: 
+Answer: I would like to have part 1 completed by Friday 2/6/26, and part
+2 completed by the Friday after that 2/13/26. I would unit test each part
+while I am writing them and diff once I have finished part 2.

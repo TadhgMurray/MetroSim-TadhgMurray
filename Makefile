@@ -15,13 +15,32 @@ LDFLAGS  = -g3
 # If you add other classes, you'll have to add their .o files as dependencies here.
 # Don't forget:  the clang++ command must be indented with a TAB character
 # and be all on one line.
-MetroSim: main.o MetroSim.o PassengerQueue.o Passenger.o
+MetroSim: main.o MetroSim.o PassengerQueue.o Passenger.o Train.o Station.o
+	$(CXX) $(CXXFLAGS) $^ -o MetroSim
 	
 
 # ***TODO***
 # Write rules for any other .o files.
 # You can base them on the PassengerQueue.o rule.
 # Every .cpp file that is part of your program should have a .o rule.
+
+#this rule builds Main.o
+Main.o: Main.cpp Main.h MetroSim.h Train.h Station.h \
+		PassengerQueue.h Passenger.h
+	$(CXX) $(CXXFLAGS) -c Main.cpp
+
+#this rule builds MetroSim.o
+MetroSim.o: MetroSim.cpp MetroSim.h Train.h \
+			Station.h PassengerQueue.h Passenger.h
+	$(CXX) $(CXXFLAGS) -c MetroSim.cpp
+
+#this rule builds Train.o
+Train.o: Train.cpp Train.h Station.h PassengerQueue.h Passenger.h
+	$(CXX) $(CXXFLAGS) -c Train.cpp
+
+#this rule builds Station.o
+Station.o: Station.cpp Station.h PassengerQueue.h Passenger.h
+	$(CXX) $(CXXFLAGS) -c Station.cpp
 
 # This rule builds PassengerQueue.o
 PassengerQueue.o: PassengerQueue.cpp PassengerQueue.h Passenger.h 

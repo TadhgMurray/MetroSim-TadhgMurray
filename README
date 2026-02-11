@@ -2,6 +2,7 @@
 * Project 1: Metro Simulator
 * CS 15
 * README
+* Name: Tadhg Murray (tmurra01)
 *
 *********************************************************/
 
@@ -10,60 +11,103 @@ Compile/run:
             make MetroSim
      - run executable with
             ./MetroSim stationsFile passFile [commands]
+Compile/run Part1:
+     - run unit tests with
+        unit_test
 
 
 Program Purpose:
-
+    The purpose of this program is to simulate a metro with
+    stations and a train. For part 1 the purpose is to simulate
+    the passengers and a queue of these passengers in this metro.
 
 Acknowledgements: 
+    Learned about how vectors work through
+    lectures about arraylists. Learned about vector operations
+    through GeeksforGeeks documentation about vector operations.
+    Got help from TA about my implementation when meeting with
+    them.
 
 
 Files: 
 
+Part 2 Files(TO-DO):
+
 main.cpp:
-     STUDENT TO-DO: Main file should be short and handle simple driver
-     functions such as reading in files.
+ STUDENT TO-DO: Main file should be short and handle simple driver
+    functions such as reading in files.
 
 MetroSim.cpp:
-     STUDENT TO-DO: Implementation of MetroSim class.  Main
-     functionality of running the Metro Simulation, should be able to
-     move trains and deal with passengers going on/off the train.
+    STUDENT TO-DO: Implementation of MetroSim class.  Main
+    functionality of running the Metro Simulation, should be able to
+    move trains and deal with passengers going on/off the train.
 
 MetroSim.h:
-     STUDENT TO-DO: Interface of MetroSim class.
+    STUDENT TO-DO: Interface of MetroSim class.
 
 stations.txt:
-     an example file containing a list of stations.
+    an example file containing a list of stations.
 
 test_commands.txt:
-     sample list of commands that you could give to the simulator
+    sample list of commands that you could give to the simulator
 
 the_metroSim:
-     reference implementation for students to see how 
+    reference implementation for students to see how 
+
+Part 1 files:
+
+PassengerQueue.h:
+    Interface of PassengerQueue class
+
+PassengerQueue.cpp:
+    Implementation of PassengerQueue class
+
+Passenger.h:
+    Interface of Passenger class
+
+Passenger.cpp:
+    Implementation of Passenger class
+
+unit_tests.h
+    Unit tests for the Passenger and PassengerQueue classes
+
+README
+    This file
 
 
 Note:  the program should handle all cases.
 
 Data Structures:
 
+    The PassengerQueue class uses a list ADT to hold a collection
+    of passengers. This list ADT supports removal, insertion, and
+    access of its elements. This ADT was implemented through the vector
+    class, which is an arraylist. I used this because implementation
+    because it has O(1) access complexity, and O(1) insertion at the end,
+    which is necessary for enqueue passengers.
+    Some disadvantages of this data structure is it has an O(n) complexity
+    for removal at the start, which is necessary for dequeueing passengers.
+    Another disadvantage is that vectors can often allocate more memory than
+    necessary because its allocated capacity is greater than its size.
 
 Testing:
 
-Here describe the following: process of testing (unit tests), mention
-of bugs you encountered while testing, mention of testing on inputs of
-different sizes and edge cases, good description of base cases you
-considered while testing. Demonstrate a methodical approach to
-testing.  This section of your REAMDE should be very thorough for
-assignments.
+    I used unit tests to test the program, testing each function of both 
+    classes after I wrote each one. I did not find any bugs while testing. 
+    I tested each function using the print or getter functions of Passenger
+    or PassengerQueue classes depending on what function I was testing.
+    After I wrote each functions of the classes I would creates tests that
+    would test multiple functions, like enqueue() then dequque() of the
+    PassengerQueue class. For the functions whre it could be applicable, I
+    would stress test the functions by using it multiple times.
 
 Note: This assignment comes partially implemented, but student must also
 create the driver and add class functionality.
 
 Part that you found most difficult:
 
-Here, inditicate the part of the assignment that you found the most
-challenging. It could be a concept (ie. stacks) or something specific
-to the assignment. This will help us know what to review and what to
-focus on.
+    The part I found most difficult was understanding the print functions
+    and how the ostream argument worked, including what libraries I need
+    to add to unit_tests.h.
 
-Time Spent: 
+Time Spent: 5 hours

@@ -1,11 +1,19 @@
 /*
-TODO -- add a file header here! 
-*/
+ *  Passenger.cpp
+ *  Tadhg Murray(tmurra01)
+ *  2/4/26
+ *
+ *  CS 15 Project 1 metrosim
+ *
+ *  This file contains an implementation of the Passenger class.
+ *
+ */
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 
 #include "Passenger.h"
-
-#include <iostream>
-#include <string>
 
 /*
  * name:      Passenger( )
@@ -58,8 +66,14 @@ int Passenger::getStartingStation() { return startingStation; }
 int Passenger::getEndingStation() { return endingStation; }
 
 /*
- * TODO -- write a function contract for this!
+ * name:      print
+ * purpose:   prints the passenger's information in the required format
+ * arguments: std::ostream &output — the output stream to write to
+ * returns:   nothing
+ * effects:   none
+ * other:     none
  */
 void Passenger::print(std::ostream &output) {
-    // TODO -- implement this function! 
+    output << "[" << id << ", " << startingStation << "->" << endingStation;
+    output << "]";
 }
