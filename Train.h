@@ -8,7 +8,7 @@
  *  Train is a class that represents a train in the metro simulation. It
  *  starts empty, and passengers can be inserted/removed based on what station
  *  the train is at. It also supports printing the information of the 
- *  passenges on the train.
+ *  passengers on the train.
  *
  */
 

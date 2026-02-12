@@ -32,7 +32,8 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     MetroSim sim(argc, argv);
-    sim.run();
+    readStations(sim);
+    readInput(sim);
     return 0;
 }
 
@@ -56,8 +57,7 @@ int MetroSim::readStations(MetroSim sim) {
     //station list
     while (std::getline(inFile, stationName)) {
         Station s(maxStationIndex, stationName);
-        stationList.push_back(s);
-        maxStationIndex++;
+        sim.addStation(s);
     }
     return 0;
 }
@@ -97,7 +97,7 @@ void MetroSim::readInput(MetroSim sim)
 void MetroSim::runInputLoop(MetroSim sim, std::istream &in) {
     std::string line;
     //prints out simulation for the first time
-    printCurrentSimulation();
+    sim.printCurrentSimulation();
     //loops through each turn asking for user input
     while (true) {
         std::cout << "Command? ";
@@ -108,11 +108,11 @@ void MetroSim::runInputLoop(MetroSim sim, std::istream &in) {
             return;
         }
         else if(line[0] == "p") {
-            addPassenger(line);
+            sim.addPassenger(line);
         }
         else if(line == "m m") {
-            moveTrain();
+            sim.moveTrain();
         }
-        printCurrentSimulation();
+        sim.printCurrentSimulation();
     }
 }

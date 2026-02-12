@@ -27,100 +27,24 @@
  * effects:   none
  * other:     none
  */
-MetroSim::MetroSim(int argc, char *argv[]) {
+MetroSim::MetroSim() {
     outputFile.open(argv[2]);
     currentStationIndex = 0;
     maxStationIndex = 0;
     currentPassengerID = 1;
-    this->argc = argc;
-    this->argv = argv;
 }
 
 /*
- * name:      run
- * purpose:   runs the MetroSim simulation
- * arguments: none
+ * name:      addStation
+ * purpose:   adds station to the station list
+ * arguments: Station s to add to station list
  * returns:   none
  * effects:   none
  * other:     none
  */
-void MetroSim::run() {
-    readStations();
-    readInput();
-}
-
-/*
- * name:      readStations
- * purpose:   creates stations in the simulation using the stations file
- * arguments: none
- * returns:   none
- * effects:   none
- * other:     none
- */
-int MetroSim::readStations() {
-    std::ifstream inFile(argv[1]);
-    if (!inFile.is_open()) {
-        std::cerr << "Error: could not open file " << argv[1];
-        return EXIT_FAILURE;
-    }
-    std::string stationName;
-    //Goes through file, creating stations and adding them to MetroSim's 
-    //station list
-    while (std::getline(inFile, stationName)) {
-        Station s(maxStationIndex, stationName);
-        stationList.push_back(s);
-        maxStationIndex++;
-    }
-    return 0;
-}
-
-/*
- * name:      readInput
- * purpose:   reads user input either from given file or the console
- * arguments: none
- * returns:   none
- * effects:   none
- * other:     none
- */
-void MetroSim::readInput()
-{
-    std::ifstream file;
-    std::istream *in = &std::cin;
-    if (argc > 3) {
-        file.open(argv[3]);
-        if (!file.is_open()) {
-            std::cerr << "Error: could not open file " << argv[3] << std::endl;
-            return;
-        }
-        in = &file;
-    }
-    runInputLoop(*in);
-    std::cout << "Thanks for playing MetroSim. Have a nice day!" << std::endl;
-}
-
-/*
- * name:      runInputLoop
- * purpose:   reads user input for each turn
- * arguments: std::istream &in to read input from the user/file
- * returns:   none
- * effects:   none
- * other:     none
- */
-void MetroSim::runInputLoop(std::istream &in) {
-    std::string line;
-    //prints out simulation for the first time
-    printCurrentSimulation();
-    //loops through each turn asking for user input
-    while (true) {
-        std::cout << "Command? ";
-        if (!std::getline(in, line)) {
-            return;
-        }
-        if (line == "m f") {
-            return;
-        }
-        currentInput(line);
-    }
+void MetroSim::addStation(Station s) {
+    stationList.push_back(s);
+    maxStationIndex++;
 }
 
 /*

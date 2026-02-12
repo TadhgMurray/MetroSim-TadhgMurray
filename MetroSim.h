@@ -5,10 +5,10 @@
  *
  *  CS 15 Project 1 metrosim
  *
- *  MetroSim is a class that simulates a metro line. It can run this simulation
- *  using two text files for stations and output, and a way for the user to
- *  input commands. MetroSim is able to move trains and deal with unloading/
- *  loading passengers. It can also add passengers to Stations.
+ *  MetroSim is a class that simulates a metro line. It takes in commands and
+ *  runs them in the simulation, controlling a train and the stations on the
+ *  line. It can add passengers to the station, move the train, and print
+ *  the current state of the simulation.
  *
  */
 
@@ -28,6 +28,7 @@ class MetroSim
 
 public:
     MetroSim(int argc, char *argv[]);
+    void addStation(Station s);
     void addPassenger(std::string current);
     void moveTrain();
     void printCurrentSimulation();
@@ -39,8 +40,6 @@ private:
     int currentStationIndex;
     int maxStationIndex;
     std::ofstream outputFile;
-    int argc;
-    char **argv;
 };
 
 #endif
