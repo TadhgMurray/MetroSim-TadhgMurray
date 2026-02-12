@@ -34,16 +34,16 @@ Files:
 Part 2 Files(TO-DO):
 
 main.cpp:
- STUDENT TO-DO: Main file should be short and handle simple driver
+    Main file should be short and handle simple driver
     functions such as reading in files.
 
 MetroSim.cpp:
-    STUDENT TO-DO: Implementation of MetroSim class.  Main
+    Implementation of MetroSim class. Main
     functionality of running the Metro Simulation, should be able to
     move trains and deal with passengers going on/off the train.
 
 MetroSim.h:
-    STUDENT TO-DO: Interface of MetroSim class.
+    Interface of MetroSim class.
 
 stations.txt:
     an example file containing a list of stations.
@@ -54,22 +54,33 @@ test_commands.txt:
 the_metroSim:
     reference implementation for students to see how 
 
-Part 1 files:
+Station.h:
+    Interface of the Station class
+
+Station.cpp:
+    Implementation of the Station class
+
+Train.h:
+    Interface of the Train class
+
+Train.cpp:
+    Implementation of the Train class
 
 PassengerQueue.h:
-    Interface of PassengerQueue class
+    Interface of the PassengerQueue class
 
 PassengerQueue.cpp:
-    Implementation of PassengerQueue class
+    Implementation of the PassengerQueue class
 
 Passenger.h:
-    Interface of Passenger class
+    Interface of the Passenger class
 
 Passenger.cpp:
-    Implementation of Passenger class
+    Implementation of the Passenger class
 
 unit_tests.h
-    Unit tests for the Passenger and PassengerQueue classes
+    Unit tests for the Passenger, PassengerQueue, Train, Station, and MetroSim
+    classes.
 
 README
     This file

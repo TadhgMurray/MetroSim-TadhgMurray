@@ -5,10 +5,10 @@
  *
  *  CS 15 Project 1 metrosim
  *
- *  Station is a class that represents a station in the metro simulation. It
- *  starts empty, and passengers can be inserted/removed at
- *  the first index. It also supports getting its size and getting the front
- *  Passenger. It can also print the info of each Passenger it contains/ 
+ *  Train is a class that represents a train in the metro simulation. It
+ *  starts empty, and passengers can be inserted/removed based on what station
+ *  the train is at. It also supports printing the information of the 
+ *  passenges on the train.
  *
  */
 
@@ -29,6 +29,7 @@ class Train {
         void print(std::ostream &output);
     private:
         PassengerQueue trainPassengers;
+        //private helper functions
         int getLowestStation(PassengerQueue pq);
         void sortPassengerQueue(PassengerQueue correctOrder);
 };

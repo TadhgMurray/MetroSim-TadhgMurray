@@ -124,44 +124,48 @@ void MetroSim::runInputLoop(std::istream &in) {
 }
 
 /*
- * name:      currentInput
- * purpose:   plays out a turn in the simulation
- * arguments: std::string current representing the current user command
+ * name:      addPassenger
+ * purpose:   adds passenger to a station queue
+ * arguments: std::string command for Passenger's start and end station index
  * returns:   none
  * effects:   none
  * other:     none
  */
-void MetroSim::currentInput(std::string current) {
-    //makes istringstream instance so can split up current into parts
+void MetroSim::addPassenger(std::string command) {
     std::istringstream iss(current);
     char cmd;
     iss >> cmd;
-    if (cmd == 'p') {
-        int startStationIndex;
-        int endStationIndex;
-        //gets start and end station from istringstream instance
-        iss >> startStationIndex >> endStationIndex;
-        Passenger p(currentPassengerID, startStationIndex, endStationIndex);
-        stationList[startStationIndex].addPassenger(p);
-        currentPassengerID++;
+    int startStationIndex;
+    int endStationIndex;
+    //gets start and end station from istringstream instance
+    iss >> startStationIndex >> endStationIndex;
+    Passenger p(currentPassengerID, startStationIndex, endStationIndex);
+    stationList[startStationIndex].addPassenger(p);
+    currentPassengerID++;
+}
+
+/*
+ * name:      currentInput
+ * purpose:   moves the train to the next station
+ * arguments: none
+ * returns:   none
+ * effects:   none
+ * other:     none
+ */
+void MetroSim::moveTrain() {
+    //std:: ostringstream log to put unloading passenger info into
+    std::ostringstream exitLog;
+    //loads people into train before leaving station
+    train1.loadPassengers(stationList[currentStationIndex]);
+    stationList[currentStationIndex].erasePassengers();
+    //unloads immediately after entering new station
+    currentStationIndex++;
+    //loops around stations if necessary
+    if (currentStationIndex >= maxStationIndex) {
+        currentStationIndex = 0;
     }
-    //since "m f" case slready covered 'm' is automatically "m m" command
-    else if (cmd == 'm') {
-        //std:: ostringstream log to put unloading passenger info into
-        std::ostringstream exitLog;
-        //loads people into train before leaving station
-        train1.loadPassengers(stationList[currentStationIndex]);
-        stationList[currentStationIndex].erasePassengers();
-        //unloads immediately after entering new station
-        currentStationIndex++;
-        //loops around stations if necessary
-        if (currentStationIndex >= maxStationIndex) {
-            currentStationIndex = 0;
-        }
-        train1.unloadPassengers(stationList[currentStationIndex], exitLog);
-        outputFile << exitLog.str();
-    }
-    printCurrentSimulation();
+    train1.unloadPassengers(stationList[currentStationIndex], exitLog);
+    outputFile << exitLog.str();
 }
 
 /*

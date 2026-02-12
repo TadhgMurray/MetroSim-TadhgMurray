@@ -27,14 +27,17 @@
 class Station {
     public:
         Station(int num, std::string name);
+        //getters
         int getStationNumber() const;
         std::string getStationName() const;
         PassengerQueue getPassengerList(int index);
-        void addPassenger(Passenger p);
-        int getQueueSize();
-        void print(std::ostream &output);
-        void erasePassengers();
         Passenger getFirstPassenger();
+        int getQueueSize();
+        //print functions
+        void print(std::ostream &output);
+        //passenger insertion/removal
+        void addPassenger(Passenger p);
+        void erasePassengers();
         void dequeue();
     private:
         PassengerQueue stationPassengers;
