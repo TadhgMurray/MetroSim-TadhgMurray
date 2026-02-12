@@ -15,25 +15,30 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 
 #include "MetroSim.h"
 
 using namespace std;
 
+int readStations(MetroSim *sim, char *argv[]);
+void readInput(MetroSim *sim, int argc, char *argv[]);
+void runInputLoop(MetroSim *sim, std::istream &in);
+
 /*
  * name:      main
- * purpose:   Runs the simulation using the MetroSim class
+ * purpose:   Runs the simulation, reading the files/commands
  * arguments: int argc representing number of commandline arguments,
  * char *argv[] that stores those command line arguments
- * returns:   returnts int 0 once programis finished running
+ * returns:   returnts int 0 once program is finished running
  * effects:   none
  * other:     none
  */
 int main(int argc, char *argv[])
 {
-    MetroSim sim(argc, argv);
-    readStations(sim);
-    readInput(sim);
+    MetroSim sim;
+    readStations(&sim, argv);
+    readInput(&sim, argc, argv);
     return 0;
 }
 
@@ -46,7 +51,7 @@ int main(int argc, char *argv[])
  * effects:   none
  * other:     none
  */
-int MetroSim::readStations(MetroSim sim) {
+int readStations(MetroSim *sim, char *argv[]) {
     std::ifstream inFile(argv[1]);
     if (!inFile.is_open()) {
         std::cerr << "Error: could not open file " << argv[1];
@@ -56,8 +61,8 @@ int MetroSim::readStations(MetroSim sim) {
     //Goes through file, creating stations and adding them to MetroSim's 
     //station list
     while (std::getline(inFile, stationName)) {
-        Station s(maxStationIndex, stationName);
-        sim.addStation(s);
+        Station s(sim->getMaxStationIndex(), stationName);
+        sim->addStation(s);
     }
     return 0;
 }
@@ -70,8 +75,7 @@ int MetroSim::readStations(MetroSim sim) {
  * effects:   none
  * other:     none
  */
-void MetroSim::readInput(MetroSim sim)
-{
+void readInput(MetroSim *sim, int argc, char *argv[]) {
     std::ifstream file;
     std::istream *in = &std::cin;
     if (argc > 3) {
@@ -94,10 +98,10 @@ void MetroSim::readInput(MetroSim sim)
  * effects:   none
  * other:     none
  */
-void MetroSim::runInputLoop(MetroSim sim, std::istream &in) {
+void runInputLoop(MetroSim *sim, std::istream &in) {
     std::string line;
     //prints out simulation for the first time
-    sim.printCurrentSimulation();
+    sim->printCurrentSimulation();
     //loops through each turn asking for user input
     while (true) {
         std::cout << "Command? ";
@@ -107,12 +111,13 @@ void MetroSim::runInputLoop(MetroSim sim, std::istream &in) {
         if (line == "m f") {
             return;
         }
-        else if(line[0] == "p") {
-            sim.addPassenger(line);
+        else if(line[0] == 'p') {
+            sim->addPassenger(line);
         }
         else if(line == "m m") {
-            sim.moveTrain();
+            std::ostringstream exit;
+            sim->moveTrain(exit);
         }
-        sim.printCurrentSimulation();
+        sim->printCurrentSimulation();
     }
 }

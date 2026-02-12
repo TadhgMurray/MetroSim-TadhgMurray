@@ -21,14 +21,13 @@
 
 /*
  * name:      MetroSim
- * purpose:   int argc representing number of commandline arguments,
- * char *argv[] that stores those command line arguments
+ * purpose:   creates a MetroSim object
+ * arguments: none
  * returns:   none
  * effects:   none
  * other:     none
  */
 MetroSim::MetroSim() {
-    outputFile.open(argv[2]);
     currentStationIndex = 0;
     maxStationIndex = 0;
     currentPassengerID = 1;
@@ -48,6 +47,42 @@ void MetroSim::addStation(Station s) {
 }
 
 /*
+ * name:      getMaxStationIndex
+ * purpose:   returns the index of the last station in the line
+ * arguments: none
+ * returns:   none
+ * effects:   none
+ * other:     none
+ */
+int MetroSim::getMaxStationIndex() {
+    return maxStationIndex;
+}
+
+/*
+ * name:      getCurrentPassengerID
+ * purpose:   returns the index of the last passenger added + 1
+ * arguments: none
+ * returns:   none
+ * effects:   none
+ * other:     none
+ */
+int MetroSim::getCurrentPassengerID() {
+    return currentPassengerID;
+}
+
+/*
+ * name:      getCurrentStationIndex
+ * purpose:   returns the index of current Station the train is at
+ * arguments: none
+ * returns:   none
+ * effects:   none
+ * other:     none
+ */
+int MetroSim::getCurrentStationIndex() {
+    return currentStationIndex;
+}
+
+/*
  * name:      addPassenger
  * purpose:   adds passenger to a station queue
  * arguments: std::string command for Passenger's start and end station index
@@ -56,7 +91,7 @@ void MetroSim::addStation(Station s) {
  * other:     none
  */
 void MetroSim::addPassenger(std::string command) {
-    std::istringstream iss(current);
+    std::istringstream iss(command);
     char cmd;
     iss >> cmd;
     int startStationIndex;
@@ -76,7 +111,7 @@ void MetroSim::addPassenger(std::string command) {
  * effects:   none
  * other:     none
  */
-void MetroSim::moveTrain() {
+void MetroSim::moveTrain(std::ostream &output) {
     //std:: ostringstream log to put unloading passenger info into
     std::ostringstream exitLog;
     //loads people into train before leaving station
@@ -89,7 +124,7 @@ void MetroSim::moveTrain() {
         currentStationIndex = 0;
     }
     train1.unloadPassengers(stationList[currentStationIndex], exitLog);
-    outputFile << exitLog.str();
+    output << exitLog.str();
 }
 
 /*
@@ -117,18 +152,3 @@ void MetroSim::printCurrentSimulation() {
     }
     std::cout << out.str();
 }
-
-/*
- * name:      ~MetroSim
- * purpose:   closes the output file
- * arguments: none
- * returns:   none
- * effects:   none
- * other:     none
- */
-MetroSim::~MetroSim() {
-    if (outputFile.is_open()) {
-        outputFile.close();
-    }
-}
-

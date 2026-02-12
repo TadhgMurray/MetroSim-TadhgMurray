@@ -25,9 +25,9 @@ MetroSim: main.o MetroSim.o PassengerQueue.o Passenger.o Train.o Station.o
 # Every .cpp file that is part of your program should have a .o rule.
 
 #this rule builds Main.o
-Main.o: Main.cpp Main.h MetroSim.h Train.h Station.h \
+main.o: main.cpp MetroSim.h Train.h Station.h \
 		PassengerQueue.h Passenger.h
-	$(CXX) $(CXXFLAGS) -c Main.cpp
+	$(CXX) $(CXXFLAGS) -c main.cpp
 
 #this rule builds MetroSim.o
 MetroSim.o: MetroSim.cpp MetroSim.h Train.h \
@@ -46,12 +46,15 @@ Station.o: Station.cpp Station.h PassengerQueue.h Passenger.h
 PassengerQueue.o: PassengerQueue.cpp PassengerQueue.h Passenger.h 
 	$(CXX) $(CXXFLAGS) -c PassengerQueue.cpp
 
+# This rule builds Passenger.o
+Passenger.o: Passenger.cpp Passenger.h
+	$(CXX) $(CXXFLAGS) -c Passenger.cpp
 
-# ***TODO***
 # The below rule will be used by unit_test.
 # Please add any other .o files that are needed by PassengerQueue,
 # and any other .o files you wish to test. 
-unit_test: unit_test_driver.o PassengerQueue.o Passenger.o
+unit_test: unit_test_driver.o MetroSim.o Train.o Station.o PassengerQueue.o \
+			Passenger.o
 	$(CXX) $(CXXFLAGS) $^
 
 # remove executables, object code, and temporary files from the current folder 

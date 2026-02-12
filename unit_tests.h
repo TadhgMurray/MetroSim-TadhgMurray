@@ -14,11 +14,11 @@
 #include <sstream>
 #include <string>
 
+#include "Station.h"
 #include "Passenger.h"
 #include "PassengerQueue.h"
-#include "Station.cpp"
-#include "Train.cpp"
-#include "MetroSim.cpp"
+#include "Train.h"
+#include "MetroSim.h"
 
 //tests print() from the Passenger class
 void pPrintTest1() {
@@ -415,12 +415,88 @@ void trainUnload100PassengerTrain() {
     assert(exit.str() == exitOutput);
 }
 
-//tests the MetroSim class using run()
-void metroSimRunTest() {
-    char arg0[] = "stations.txt";
-    char arg1[] = "outputFile";
-    char arg2[] = "test_commands.txt";
-    char* fakeArgv[] = {arg0, arg1, arg2};
-    MetroSim sim(3, fakeArgv);
-    sim.run();
+//tests getMaxStationIndex() on an empty MetroSim object
+void metroSimGetMaxStationIndexTest() {
+    MetroSim sim;
+    assert(sim.getMaxStationIndex() == 0);
+}
+
+//tests addStation() one time
+void metroSimAddStationTest() {
+    MetroSim sim;
+    Station s(1, "hello");
+    sim.addStation(s);
+    assert(sim.getMaxStationIndex() == 1);
+}
+
+//tests addStation() 100 times
+void metroSimAddStation100TimesTest() {
+    MetroSim sim;
+    Station s(1, "hello");
+    for (int i = 0; i < 100; i++) {
+        sim.addStation(s);
+    }
+    assert(sim.getMaxStationIndex() == 100);
+}
+
+//tests addPassenger() once
+void metroSimAddPassengerTest() {
+    MetroSim sim;
+    Station s(0, "A");
+    sim.addStation(s);
+    std::string p = "p 0 0";
+    sim.addPassenger(p);
+    assert(sim.getCurrentPassengerID() == 2);
+}
+
+//tests addPassenger() on an empty MetroSim object
+void metroSimAddPassengerEmptyTest() {
+    MetroSim sim;
+    assert(sim.getCurrentPassengerID() == 1);
+}
+
+//tests addPassenger() 100 times
+void metroSimAddPassenger100TimesTest() {
+    MetroSim sim;
+    Station s(0, "A");
+    sim.addStation(s);
+    std::string p = "p 0 0";
+    for (int i = 0; i < 100; i++) {
+        sim.addPassenger(p);
+    }
+    assert(sim.getCurrentPassengerID() == 101);
+}
+
+//tests getCurrentPassengerID() on an empty MetroSim object
+void metroSimGetCurrentStationIndexTestEmpty() {
+    MetroSim sim;
+    assert(sim.getCurrentStationIndex() == 0);
+}
+
+//tests moveTrain() once
+void metroSimMoveTrainTest() {
+    MetroSim sim;
+    Station s(0, "hello");
+    std::ostringstream exit;
+    sim.moveTrain(exit);
+    //wraps around to 0
+    assert(sim.getCurrentStationIndex() == 0);
+    assert(exit.str() == "");
+}
+
+
+//tests moveTrain() 100 times
+void metroSimMoveTrain100TimesTest() {
+    MetroSim sim;
+    Passenger p(0, 0, 1);
+    Station s(0, "hello");
+    std::ostringstream exit;
+    for (int i = 0; i < 100; i++) {
+        sim.addStation(s);
+    }
+    for (int i = 0; i < 99; i++) {
+        sim.moveTrain(exit);
+    }
+    assert(sim.getCurrentStationIndex() == 100);
+    assert(exit.str() == "");
 }

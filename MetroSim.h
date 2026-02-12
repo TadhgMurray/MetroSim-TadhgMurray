@@ -27,19 +27,20 @@ class MetroSim
 {
 
 public:
-    MetroSim(int argc, char *argv[]);
+    MetroSim();
     void addStation(Station s);
     void addPassenger(std::string current);
-    void moveTrain();
+    void moveTrain(std::ostream &output);
     void printCurrentSimulation();
-    ~MetroSim();    
+    int getMaxStationIndex();  
+    int getCurrentPassengerID();
+    int getCurrentStationIndex();
 private:
     std::vector <Station> stationList;
     Train train1;
     int currentPassengerID;
     int currentStationIndex;
     int maxStationIndex;
-    std::ofstream outputFile;
 };
 
 #endif
