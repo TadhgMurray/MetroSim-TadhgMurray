@@ -99,7 +99,7 @@ void MetroSim::addPassenger(std::string command) {
     //gets start and end station from istringstream instance
     iss >> startStationIndex >> endStationIndex;
     Passenger p = createPassenger(startStationIndex, endStationIndex);
-    stationList[start].addPassenger(p);
+    stationList[startStationIndex].addPassenger(p);
 }
 
 /*
@@ -112,7 +112,7 @@ void MetroSim::addPassenger(std::string command) {
  * other:     bug: if startStationIndex is incorrect program crashes
  */
 Passenger MetroSim::createPassenger(int startStation, int endStation) {
-    Passenger p(currentPassengerID, start, end);
+    Passenger p(currentPassengerID, startStation, endStation);
     currentPassengerID++;
     return p;
 }
