@@ -258,7 +258,8 @@ void stationGetFirstPassengerTest() {
     s.addPassenger(p);
     assert(s.getFirstPassenger().getId() == p.getId());
     assert(s.getFirstPassenger().getEndingStation() == p.getEndingStation());
-    assert(s.getFirstPassenger().getStartingStation() == p.getStartingStation());
+    assert(s.getFirstPassenger().getStartingStation() == 
+            p.getStartingStation());
 }
 
 //tests getFirstPassenger() on a 100 passenger queue station
@@ -270,7 +271,8 @@ void stationGetFirstPassenger100PassengerTest() {
     }
     assert(s.getFirstPassenger().getId() == p.getId());
     assert(s.getFirstPassenger().getEndingStation() == p.getEndingStation());
-    assert(s.getFirstPassenger().getStartingStation() == p.getStartingStation());
+    assert(s.getFirstPassenger().getStartingStation() == 
+            p.getStartingStation());
 }
 
 //tests getFirstPassenger() on a 100 passenger queue station on all passengers
@@ -282,8 +284,10 @@ void stationGetFirstPassenger100PassengerAllPassengersTest() {
     }
     for (int i = 0; i < 100; i++) {
         assert(s.getFirstPassenger().getId() == p.getId());
-        assert(s.getFirstPassenger().getEndingStation() == p.getEndingStation());
-        assert(s.getFirstPassenger().getStartingStation() == p.getStartingStation());
+        assert(s.getFirstPassenger().getEndingStation() == 
+                p.getEndingStation());
+        assert(s.getFirstPassenger().getStartingStation() == 
+                p.getStartingStation());
         s.dequeue();
     }
 }
@@ -415,6 +419,71 @@ void trainUnload100PassengerTrain() {
     assert(exit.str() == exitOutput);
 }
 
+//tests that passengers are sorted by ending station after unload
+void trainSortingOrderTest() {
+    Train t;
+    Station s(0, "A");
+    Passenger p1(1, 0, 3);
+    Passenger p2(2, 0, 1);
+    Passenger p3(3, 0, 2);
+    s.addPassenger(p1);
+    s.addPassenger(p2);
+    s.addPassenger(p3);
+    t.loadPassengers(s);
+    std::ostringstream exit;
+    //unload at unrelated station so none leave
+    Station dummy(99, "Z");
+    t.unloadPassengers(dummy, exit);
+    std::ostringstream out;
+    t.print(out);
+    assert(out.str() == 
+            "Passengers on the train: {[2, 0->1][3, 0->2][1, 0->3]}\n");
+}
+
+//tests unloadPassengers() with only some passengers leaving
+void trainPartialUnloadTest() {
+    Train t;
+    Station s(0, "A");
+    Passenger p1(1, 0, 1);
+    Passenger p2(2, 0, 2);
+    s.addPassenger(p1);
+    s.addPassenger(p2);
+    t.loadPassengers(s);
+    Station unloadStation(1, "B");
+    std::ostringstream exit;
+    t.unloadPassengers(unloadStation, exit);
+    std::ostringstream out;
+    t.print(out);
+    assert(exit.str() == "Passenger 1 left train at station B\n");
+    assert(out.str() == "Passengers on the train: {[2, 0->2]}\n");
+}
+
+//tests unloadPassengers() at multiple filled stations
+void trainMultipleUnloadStationsTest() {
+    Train t;
+    Station s(0, "A");
+    Passenger p1(1, 0, 1);
+    Passenger p2(2, 0, 2);
+    Passenger p3(3, 0, 3);
+    s.addPassenger(p1);
+    s.addPassenger(p2);
+    s.addPassenger(p3);
+    t.loadPassengers(s);
+    std::ostringstream exit;
+    Station s1(1, "B");
+    t.unloadPassengers(s1, exit);
+    Station s2(2, "C");
+    t.unloadPassengers(s2, exit);
+    Station s3(3, "D");
+    t.unloadPassengers(s3, exit);
+    std::ostringstream out;
+    t.print(out);
+    assert(out.str() == "Passengers on the train: {}\n");
+    assert(exit.str() == "Passenger 1 left train at station B\n"
+        "Passenger 2 left train at station C\n"
+        "Passenger 3 left train at station D\n");
+}
+
 //tests getMaxStationIndex() on an empty MetroSim object
 void metroSimGetMaxStationIndexTest() {
     MetroSim sim;
@@ -473,14 +542,28 @@ void metroSimGetCurrentStationIndexTestEmpty() {
     assert(sim.getCurrentStationIndex() == 0);
 }
 
-//tests moveTrain() once
+//tests moveTrain() once on a one station line
 void metroSimMoveTrainTest() {
     MetroSim sim;
     Station s(0, "hello");
+    sim.addStation(s);
     std::ostringstream exit;
     sim.moveTrain(exit);
     //wraps around to 0
     assert(sim.getCurrentStationIndex() == 0);
+    assert(exit.str() == "");
+}
+
+//tests moveTrain() once on a multiple station line
+void metroSimMoveTrainMultipleStationTest() {
+    MetroSim sim;
+    Station s(0, "hello");
+    Station s1(1, "hello");
+    sim.addStation(s);
+    sim.addStation(s1);
+    std::ostringstream exit;
+    sim.moveTrain(exit);
+    assert(sim.getCurrentStationIndex() == 1);
     assert(exit.str() == "");
 }
 
@@ -497,6 +580,29 @@ void metroSimMoveTrain100TimesTest() {
     for (int i = 0; i < 99; i++) {
         sim.moveTrain(exit);
     }
-    assert(sim.getCurrentStationIndex() == 100);
+    assert(sim.getCurrentStationIndex() == 99);
     assert(exit.str() == "");
+}
+
+//tests moveTrain() twice, one wrap-around
+void metroSimMoveTrainWrapTest() {
+    MetroSim sim;
+    sim.addStation(Station(0, "A"));
+    sim.addStation(Station(1, "B"));
+    std::ostringstream exit;
+    sim.moveTrain(exit);
+    assert(sim.getCurrentStationIndex() == 1);
+    sim.moveTrain(exit);
+    assert(sim.getCurrentStationIndex() == 0);
+}
+
+//tests all metroSim commands together
+void metroSimFullIntegrationTest() {
+    MetroSim sim;
+    sim.addStation(Station(0, "A"));
+    sim.addStation(Station(1, "B"));
+    sim.addPassenger("p 0 1");
+    std::ostringstream exit;
+    sim.moveTrain(exit);
+    assert(exit.str() == "Passenger 1 left train at station B\n");
 }

@@ -5,10 +5,9 @@
  *
  *  CS 15 Project 1 metrosim
  *
- *  Train is a class that represents a train in the metro simulation. It
- *  starts empty, and passengers can be inserted/removed based on what station
- *  the train is at. It also supports printing the information of the 
- *  passenges on the train.
+ *  This file is the main file for the program. It reads in the files/commands
+ *  from the console and creates a MetroSim object to simulate the metro
+ *  using those read files/commands.
  *
  */
 
@@ -46,14 +45,15 @@ int main(int argc, char *argv[])
 /*
  * name:      readStations
  * purpose:   creates stations in the simulation using the stations file
- * arguments: none
+ * arguments: MetroSim *sim to add station to, char *argv[] to read stations
+ * from file
  * returns:   none
  * effects:   none
  * other:     none
  */
 int readStations(MetroSim *sim, char *argv[]) {
     std::ifstream inFile(argv[1]);
-    if (!inFile.is_open()) {
+    if (not inFile.is_open()) {
         std::cerr << "Error: could not open file " << argv[1];
         return EXIT_FAILURE;
     }
@@ -70,7 +70,8 @@ int readStations(MetroSim *sim, char *argv[]) {
 /*
  * name:      readInput
  * purpose:   reads user input either from given file or the console
- * arguments: none
+ * arguments: MetroSim *sim to run the inputs, int argc to check if commands
+ * from console or file, char *argv[] to read commands from file if given
  * returns:   none
  * effects:   none
  * other:     none
@@ -80,7 +81,7 @@ void readInput(MetroSim *sim, int argc, char *argv[]) {
     std::istream *in = &std::cin;
     if (argc > 3) {
         file.open(argv[3]);
-        if (!file.is_open()) {
+        if (not file.is_open()) {
             std::cerr << "Error: could not open file " << argv[3] << std::endl;
             return;
         }
@@ -93,7 +94,8 @@ void readInput(MetroSim *sim, int argc, char *argv[]) {
 /*
  * name:      runInputLoop
  * purpose:   reads user input for each turn
- * arguments: std::istream &in to read input from the user/file
+ * arguments: MetroSim *sim to run the commands,
+ * std::istream &in to read input from the user/file
  * returns:   none
  * effects:   none
  * other:     none
@@ -105,7 +107,7 @@ void runInputLoop(MetroSim *sim, std::istream &in) {
     //loops through each turn asking for user input
     while (true) {
         std::cout << "Command? ";
-        if (!std::getline(in, line)) {
+        if (not std::getline(in, line)) {
             return;
         }
         if (line == "m f") {

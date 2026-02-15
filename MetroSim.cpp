@@ -88,7 +88,7 @@ int MetroSim::getCurrentStationIndex() {
  * arguments: std::string command for Passenger's start and end station index
  * returns:   none
  * effects:   none
- * other:     none
+ * other:     bug: if startStationIndex is incorrect program crashes
  */
 void MetroSim::addPassenger(std::string command) {
     std::istringstream iss(command);
@@ -106,7 +106,7 @@ void MetroSim::addPassenger(std::string command) {
 /*
  * name:      currentInput
  * purpose:   moves the train to the next station
- * arguments: none
+ * arguments: std::ostream &output to write unloading info into
  * returns:   none
  * effects:   none
  * other:     none

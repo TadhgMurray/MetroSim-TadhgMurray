@@ -21,7 +21,7 @@
  * arguments: none
  * returns:   returns the first Passenger in the queue
  * effects:   none
- * other:     none
+ * other:     bug: if queue is empty crashes
  */
 Passenger PassengerQueue::front() {
     return passengerQueue[0];
@@ -33,7 +33,7 @@ Passenger PassengerQueue::front() {
  * arguments: none
  * returns:   none
  * effects:   none
- * other:     none
+ * other:     bug: if queue is empty crashes
  */
 void PassengerQueue::dequeue() {
     passengerQueue.erase(passengerQueue.begin());

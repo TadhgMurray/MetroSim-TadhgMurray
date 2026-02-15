@@ -117,7 +117,7 @@ int Train::getLowestStation(PassengerQueue pq) {
  * effects:   none
  * other:     none
  */
-void Train::loadPassengers(Station s) {
+void Train::loadPassengers(Station &s) {
     int n = s.getQueueSize();
     for (int i = 0; i < n; i++) {
         Passenger p = s.getFirstPassenger();

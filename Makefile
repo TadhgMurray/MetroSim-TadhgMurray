@@ -6,7 +6,6 @@ CXX      = clang++
 CXXFLAGS = -g3 -Wall -Wextra -Wpedantic -Wshadow
 LDFLAGS  = -g3 
 
-# ***TODO***
 # Metrosim rule - you need to fill in the linking command,
 # add any new dependencies, and add target rules for 
 # Passenger.o, MetroSim.o, main.o, and any new dependencies.
@@ -19,7 +18,6 @@ MetroSim: main.o MetroSim.o PassengerQueue.o Passenger.o Train.o Station.o
 	$(CXX) $(CXXFLAGS) $^ -o MetroSim
 	
 
-# ***TODO***
 # Write rules for any other .o files.
 # You can base them on the PassengerQueue.o rule.
 # Every .cpp file that is part of your program should have a .o rule.

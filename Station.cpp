@@ -68,7 +68,7 @@ int Station::getQueueSize() {
 
 /*
  * name:      addPassenger
- * purpose:   adds a passenger to the station's queue
+ * purpose:   adds a passenger to the station's queue at the end
  * arguments: Passenger p to add to queue
  * returns:   none
  * effects:   none
@@ -98,7 +98,7 @@ void Station::erasePassengers() {
  * arguments: none
  * returns:   Passenger in queue that user wanted
  * effects:   none
- * other:     none
+ * other:     bug: if queue is empty, crashes
  */
 Passenger Station::getFirstPassenger() {
     return stationPassengers.front();
@@ -110,7 +110,7 @@ Passenger Station::getFirstPassenger() {
  * arguments: none
  * returns:   none
  * effects:   none
- * other:     none
+ * other:     bug: if queue is empty crashes
  */
 void Station::dequeue() {
     stationPassengers.dequeue();

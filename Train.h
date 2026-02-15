@@ -6,7 +6,7 @@
  *  CS 15 Project 1 metrosim
  *
  *  Train is a class that represents a train in the metro simulation. It
- *  starts empty, and passengers can be inserted/removed based on what station
+ *  starts empty, and passengers can be loaded/unloaded based on what station
  *  the train is at. It also supports printing the information of the 
  *  passengers on the train.
  *
@@ -25,7 +25,7 @@
 class Train {
     public:
         void unloadPassengers(const Station &s, std::ostream &log);
-        void loadPassengers(Station s);
+        void loadPassengers(Station &s);
         void print(std::ostream &output);
     private:
         PassengerQueue trainPassengers;
