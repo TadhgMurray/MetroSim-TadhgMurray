@@ -1,0 +1,204 @@
+A: /*******************************************************
+* Project 1: Metro Simulator
+* CS 15
+* README
+* Name: Tadhg Murray (tmurra01)
+* Github Repository: (https://github.com/TadhgMurray/MetroSim-TadhgMurray)
+*********************************************************/
+
+
+B: Program Purpose:
+    The purpose of this program is to simulate a metro with
+    stations and a train. For part 1 the purpose is to simulate
+    the passengers and a queue of these passengers in this metro.
+
+
+C: Acknowledgements: 
+    Learned about how vectors work through
+    lectures about arraylists. Learned about vector operations
+    through GeeksforGeeks documentation about vector operations.
+    Got help from TA about my implementation when meeting with
+    them, specifically about how I could modularize command file reading/
+    console command reading to use the same function.
+    Learned about last in/first out lists in class lecture, which
+    helped in resorting/implementing PassengerQueue.
+
+
+D: Files: 
+    main.cpp:
+        Main file handles simple driver functions such as reading in
+        files and commands.
+
+    MetroSim.cpp:
+        Implementation of the MetroSim class.
+
+    MetroSim.h:
+        Interface of MetroSim class.
+
+    Station.h:
+        Interface of the Station class.
+
+    Station.cpp:
+        Implementation of the Station class.
+
+    Train.h:
+        Interface of the Train class.
+
+    Train.cpp:
+        Implementation of the Train class.
+
+    PassengerQueue.h:
+        Interface of the PassengerQueue class.
+
+    PassengerQueue.cpp:
+        Implementation of the PassengerQueue class.
+
+    Passenger.h:
+        Interface of the Passenger class.
+
+    Passenger.cpp:
+        Implementation of the Passenger class.
+
+    unit_tests.h
+        Unit tests for the Passenger, PassengerQueue, Train, Station, 
+        and MetroSim classes.
+
+    MakeFile
+        File to build the program
+
+    README
+        This file.
+
+
+E: Compile/run:
+     - Compile using
+            make MetroSim
+     - run executable with
+            ./MetroSim stationsFile passFile [commands]
+     - run unit tests with
+        unit_test
+
+
+F: Architectual Overview
+    In my MetroSim implementation I represented the stations using the
+    Station class and the train using the Train class. The MetroSim class
+    would use one instance of the Train class to represent the train on the
+    line. It would use a vector list of type <Station>, to represent the 
+    list of stations. Both the Train class and the Station class each used 
+    an instance of the PassengerQueue class to represent a list of the
+    passengers they were storing, the station queue and the train passengers. 
+    The PassengerQueue class would use instances of the Passenger class
+    to store each passenger on the line, using a vector list of type
+    <Passenger>.
+
+
+G: Data Structures:
+
+    The PassengerQueue class uses a list ADT to hold a collection
+    of passengers. This list ADT supports removal, insertion, and
+    access of its elements. This ADT was implemented through the vector
+    class, which is an arraylist. I used this implementation
+    because it has O(1) access complexity, and O(1) insertion at the end,
+    which is necessary for enqueing passengers.
+    Some disadvantages of this data structure is it has an O(n) complexity
+    for removal at the start, which is necessary for dequeueing passengers.
+    Another disadvantage is that vectors can often allocate more memory than
+    necessary because its allocated capacity is greater than its size,
+    due to the arraylist capacity being doubled each time it's expanded.
+    The Station class and train class also use a list ADT to hold its
+    passengers, and they have the same implementation and advantages/
+    disadvantages as above because they use the PassengerQueue class
+    to implement this ADT.
+
+    The MetroSim class also uses a list ADT, but to hold a list of
+    stations instead. This list ADT supports insertion and access
+    of its elements. This ADT was implemented through the vector
+    class, which is an arraylist. I used this implementation
+    because it has O(1) access complexity, and O(1) insertion at the end,
+    which is necessary for enqueing stations.
+    Some disadvantages of this data structure is it has an O(n) complexity
+    for removal at the start, however this does not matter for my case
+    because removing the Stations is not necessary.
+    Another disadvantage is that vectors can often allocate more memory than
+    necessary because its allocated capacity is greater than its size,
+    due to the arraylist capacity being doubled each time it's expanded.
+
+
+H: Testing:
+
+    I used unit tests to test the program, testing each function of both 
+    classes after I wrote each one. I did not find any bugs while testing. 
+    I tested each function using the print or getter functions of Passenger
+    or PassengerQueue classes depending on what function I was testing.
+    After I wrote each functions of the classes I would creates tests that
+    would test multiple functions, like enqueue() then dequeue() of the
+    PassengerQueue class. For the functions whre it could be applicable, I
+    would stress test the functions by using it multiple times. I would
+    use assert() to unit test.
+
+    For the second part I used unit tests to test the added classes.
+    I tested each of their functions as I wrote them, except for the MetroSim
+    class, which I will explain later. For this part I found multiple bugs,
+    such as crashes when reading the files without enough arguments. However,
+    most of these bugs do not need to be fixed because the spec says that
+    the correct arguments will be provided in the command line. However, I
+    did find some bugs that needed to be fixed. One of these is that when 
+    unloading/loading the train, the train did not sort their passengers
+    to be in end station order. I fixed this one through using other 
+    passengerQueues to add the passengers to the main PassengerQueue
+    in the correct order. Another bug I found in unit testing was that
+    my getLowestIndex() function in the train class would not get the
+    correct index and instead infinite loop because I didn't dequeue
+    the passengers and did not return the index. My sort function also
+    had bugs that I found in unit testing. It would infinite loop because
+    I would not correctly restore one of the PassengerQueues to store
+    the Passengers not yet sorted, because I added back in the sorted
+    Passengers.
+    
+    Once I was done with the unit testing I diff'd my program's output
+    to the reference's program's output. During this stage I found some bugs
+    with how I printed things, such as not adding enough spaces to some
+    of the print commands. I went through the diff output fixing these
+    until the outputs matched. The only non-printing bug I found was that
+    the program would crash when moving from the last station. This is because
+    I had not written a function for the current station index to loop back
+    around after reaching the end.
+
+    The reason I did not unit test the MetroSim functions as I wrote them
+    is because at first MetroSim handled all the file reading and simulation,
+    so it had only one public function, the run() function. This made it very
+    hard to unit test, so I ended up switching all the file reading to
+    main.cpp and added some extra public getter functions to MetroSim, 
+    and switched all of the MetroSim functions to public because now main
+    need to call them using the commands it read in. This allowed me to
+    unit test MetroSim, which I wrote during this transfer process.
+    
+    For the second part's unit tests I would test each function in multiple
+    ways, creating an object of each class that the unit test was testing
+    a function of. I would test these functions with an empty object, an
+    object containing one of whatever it was supposed to contain, and
+    another scenario with 100 of whatever it was supposed to contain.
+    After writing these, I would write unit tests testing multiple functions,
+    such as loading then unloading or unloading then loading the train.
+    For the unit tests I would test the functions by using assert() and
+    then using the getter/print functions of the respective classes to
+    test that the other functions worked. I would test that these
+    getter/print functions would work in unit tests and comparing it
+    to what the correct output should be.
+
+
+I: Time Spent: 
+    15 hours
+
+
+Parts that you found most difficult:
+
+    The parts I found most difficult was understanding the print functions
+    and how the ostream argument worked, including what libraries I need
+    to add to unit_tests.h to actually call the function using that argument.
+    I also found resorting the train's passengers after loading/unloading
+    some of them very hard, because PassengerQueue could only insert
+    at the end/remove at the start, which when inserting/removing
+    made the passengers go out of order as passengers were inserted/removed.
+    This required me to use multiple PassengerQueues to reorder the
+    train's passengers.
