@@ -1,0 +1,75 @@
+p 0 5
+p 0 6
+p 0 7
+p 0 8
+p 0 9
+p 0 1
+p 0 2
+p 0 3
+p 0 4
+p 0 5
+p 0 6
+p 0 7
+p 0 8
+p 0 9
+p 0 1
+p 0 2
+p 0 3
+p 0 4
+p 0 5
+p 0 6
+p 0 7
+p 0 8
+p 0 9
+p 0 1
+p 0 2
+p 0 3
+p 0 4
+p 0 5
+p 0 6
+p 0 7
+
+m m
+m m
+m m
+m m
+m m
+m m
+m m
+m m
+m m
+m m
+
+p 3 8
+p 3 9
+p 3 0
+p 3 1
+p 3 2
+p 3 4
+p 3 5
+p 3 6
+p 3 7
+p 3 8
+p 3 9
+p 3 0
+p 3 1
+p 3 2
+p 3 4
+p 3 5
+p 3 6
+p 3 7
+p 3 8
+p 3 9
+
+m m
+m m
+m m
+m m
+m m
+m m
+m m
+m m
+m m
+m m
+
+m f
