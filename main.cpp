@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 int readStations(MetroSim *sim, char *argv[]) {
     std::ifstream inFile(argv[1]);
     if (not inFile.is_open()) {
-        std::cerr << "Error: could not open file " << argv[1];
+        std::cerr << "Error: could not open file " << argv[1] << std::endl;
         return EXIT_FAILURE;
     }
     std::string stationName;
@@ -79,7 +79,7 @@ int readStations(MetroSim *sim, char *argv[]) {
 int readInput(MetroSim *sim, int argc, char *argv[]) {
     std::ofstream outFile(argv[2]);
     if (not outFile.is_open()) {
-        std::cerr << "Error: could not open file " << argv[1];
+        std::cerr << "Error: could not open file " << argv[2] << std::endl;
         return EXIT_FAILURE;
     }
     std::ifstream file;
@@ -87,7 +87,7 @@ int readInput(MetroSim *sim, int argc, char *argv[]) {
     if (argc > 3) {
         file.open(argv[3]);
         if (not file.is_open()) {
-            std::cerr << "Error: could not open file " << argv[3];
+            std::cerr << "Error: could not open file " << argv[3] << std::endl;
             return 0;
         }
         in = &file;
