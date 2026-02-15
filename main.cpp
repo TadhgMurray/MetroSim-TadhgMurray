@@ -33,8 +33,7 @@ void runInputLoop(MetroSim *sim, std::istream &in, std::ostream &out);
  * effects:   none
  * other:     none
  */
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     MetroSim sim;
     if (readStations(&sim, argv) != 0) {
         return EXIT_FAILURE;
@@ -68,6 +67,7 @@ int readStations(MetroSim *sim, char *argv[]) {
         Station s(sim->getMaxStationIndex(), stationName);
         sim->addStation(s);
     }
+    inFile.close();
     return 0;
 }
 
@@ -97,6 +97,10 @@ int readInput(MetroSim *sim, int argc, char *argv[]) {
         in = &file;
     }
     runInputLoop(sim, *in, outFile);
+    if (file.is_open()) {
+        file.close();
+    }
+    outFile.close();
     std::cout << "Thanks for playing MetroSim. Have a nice day!" << std::endl;
     return 0;
 }

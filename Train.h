@@ -24,14 +24,18 @@
 
 class Train {
     public:
+        Train(int numStations);
         void unloadPassengers(const Station &s, std::ostream &log);
         void loadPassengers(Station &s);
         void print(std::ostream &output);
+        ~Train();
     private:
-        PassengerQueue trainPassengers;
+        std::vector <PassengerQueue> trainPassengers;
+        int numStations;
         //private helper functions
         int getLowestStation(PassengerQueue pq);
         void sortPassengerQueue(PassengerQueue correctOrder);
+        bool compareById(Passenger& p0, Passenger& p1);
 };
 
 #endif

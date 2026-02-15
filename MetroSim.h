@@ -40,9 +40,11 @@ public:
     int getMaxStationIndex();  
     int getCurrentPassengerID();
     int getCurrentStationIndex();
+    //destructor
+    ~MetroSim();
 private:
     std::vector <Station> stationList;
-    Train train1;
+    Train *train1;
     int currentPassengerID;
     int currentStationIndex;
     int maxStationIndex;

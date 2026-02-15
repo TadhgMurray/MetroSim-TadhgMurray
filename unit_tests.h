@@ -327,7 +327,7 @@ void stationPrint100PassengerTest() {
 
 //tests loadPassengers() with an empty station
 void trainPrintEmptyTest() {
-    Train t;
+    Train t(0);
     std::ostringstream out;
     t.print(out);
     assert(out.str() == "Passengers on the train: {}\n");
@@ -335,7 +335,7 @@ void trainPrintEmptyTest() {
 
 //tests loadPassengers() with an empty station
 void trainLoadPassengersEmptyTest() {
-    Train t;
+    Train t(4);
     Station s(1, "hello");
     std::ostringstream out;
     t.loadPassengers(s);
@@ -345,7 +345,7 @@ void trainLoadPassengersEmptyTest() {
 
 //tests loadPassengers() with a one passenger station
 void trainLoadPassengersOnePassengerTest() {
-    Train t;
+    Train t(4);
     Station s(1, "hello");
     Passenger p(0, 0, 1);
     s.addPassenger(p);
@@ -355,10 +355,9 @@ void trainLoadPassengersOnePassengerTest() {
     assert(out.str() == "Passengers on the train: {[0, 0->1]}\n");
 }
 
-
 //tests loadPassengers() with a 100 passenger station
 void trainLoadPassengers100PassengersTest() {
-    Train t;
+    Train t(4);
     Station s(1, "hello");
     Passenger p(0, 0, 1);
     std::string trainPrint = "Passengers on the train: {";
@@ -375,7 +374,7 @@ void trainLoadPassengers100PassengersTest() {
 
 //tests unloadPassengers() on an empty train
 void trainUnloadEmptyTrain() {
-    Train t;
+    Train t(4);
     Station s(1, "hello");
     std::ostringstream exit;
     t.unloadPassengers(s, exit);
@@ -389,7 +388,7 @@ void trainUnloadEmptyTrain() {
 void trainUnloadOnePassengerTrain() {
     Station s(1, "hello");
     Passenger p(0, 0, 1);
-    Train t;
+    Train t(4);
     s.addPassenger(p);
     std::ostringstream exit;
     t.loadPassengers(s);
@@ -402,7 +401,7 @@ void trainUnloadOnePassengerTrain() {
 
 //tests unloadPassengers() on an empty train
 void trainUnload100PassengerTrain() {
-    Train t;
+    Train t(4);
     Station s(1, "hello");
     Passenger p(0, 0, 1);
     std::string exitOutput;
@@ -421,7 +420,7 @@ void trainUnload100PassengerTrain() {
 
 //tests that passengers are sorted by ending station after unload
 void trainSortingOrderTest() {
-    Train t;
+    Train t(101);
     Station s(0, "A");
     Passenger p1(1, 0, 3);
     Passenger p2(2, 0, 1);
@@ -442,7 +441,7 @@ void trainSortingOrderTest() {
 
 //tests unloadPassengers() with only some passengers leaving
 void trainPartialUnloadTest() {
-    Train t;
+    Train t(4);
     Station s(0, "A");
     Passenger p1(1, 0, 1);
     Passenger p2(2, 0, 2);
@@ -460,7 +459,7 @@ void trainPartialUnloadTest() {
 
 //tests unloadPassengers() at multiple filled stations
 void trainMultipleUnloadStationsTest() {
-    Train t;
+    Train t(5);
     Station s(0, "A");
     Passenger p1(1, 0, 1);
     Passenger p2(2, 0, 2);

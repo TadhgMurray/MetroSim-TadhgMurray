@@ -31,6 +31,7 @@ MetroSim::MetroSim() {
     currentStationIndex = 0;
     maxStationIndex = 0;
     currentPassengerID = 1;
+    train1 = nullptr;
 }
 
 /*
@@ -126,18 +127,21 @@ Passenger MetroSim::createPassenger(int startStation, int endStation) {
  * other:     none
  */
 void MetroSim::moveTrain(std::ostream &output) {
+    if (train1 == nullptr) {
+        train1 = new Train(maxStationIndex);
+    }
     //std:: ostringstream log to put unloading passenger info into
     std::ostringstream exitLog;
     //loads people into train before leaving station, erases passengers
     //from station
-    train1.loadPassengers(stationList[currentStationIndex]);
+    train1->loadPassengers(stationList[currentStationIndex]);
     //unloads immediately after entering new station
     currentStationIndex++;
     //loops around stations if necessary
     if (currentStationIndex >= maxStationIndex) {
         currentStationIndex = 0;
     }
-    train1.unloadPassengers(stationList[currentStationIndex], exitLog);
+    train1->unloadPassengers(stationList[currentStationIndex], exitLog);
     output << exitLog.str();
 }
 
@@ -150,10 +154,13 @@ void MetroSim::moveTrain(std::ostream &output) {
  * other:     none
  */
 void MetroSim::printCurrentSimulation() {
+    if (train1 == nullptr) {
+        train1 = new Train(maxStationIndex);
+    }
     //std:: ostringstream log to put current simulation log into
     std::ostringstream out;
     //use train and station print functions to print simulation
-    train1.print(out);
+    train1->print(out);
     for (int i = 0; i < stationList.size(); i++) {
         //if train is at this index prints Train:
         if (i == currentStationIndex) {
@@ -165,4 +172,23 @@ void MetroSim::printCurrentSimulation() {
         stationList[i].print(out);
     }
     std::cout << out.str();
+}
+
+/*
+ * name:      ~MetroSim
+ * purpose:   deletes train pointer
+ * arguments: none
+ * returns:   none
+ * effects:   none
+ * other:     none
+ */
+MetroSim::~MetroSim() {
+    for (auto &s : stationList) {
+        while (s.getQueueSize() > 0) {
+            s.dequeue();
+        }
+    }
+    if (train1) {
+        delete train1;
+    }
 }

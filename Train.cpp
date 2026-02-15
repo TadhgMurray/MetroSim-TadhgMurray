@@ -12,8 +12,21 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "Train.h"
+
+/*
+ * name:      Train
+ * purpose:   creates a Train object
+ * arguments: int numStations for size of PassengerQueue vector
+ * returns:   none
+ * effects:   none
+ * other:     none
+ */
+Train::Train(int numStations) {
+    trainPassengers.resize(numStations);
+}
 
 /*
  * name:      unloadPassengers
@@ -26,92 +39,32 @@
  * other:     none
  */
 void Train::unloadPassengers(const Station &s, std::ostream &log) {
-    //PassengerQueue to store correct order(end station) of passengers to put 
-    //back into train's PassengerQueue
-    PassengerQueue correctOrder;
-    //stores what the size of the train's PassengerQueue should be after 
-    //unloading
-    int passengersLeft = trainPassengers.size();
-    int i = 0;
-    //traverses through PassengerQueue unloading Passengers and keeping
-    //non-unloaded Passeers in a different PassengerQueue for storage
-    while (i < passengersLeft) {
-        Passenger p = trainPassengers.front();
-        if (p.getEndingStation() == s.getStationNumber()) {
-            log << "Passenger " << p.getId();
-            log << " left train at station " << s.getStationName() << "\n";
-            trainPassengers.dequeue();
-            passengersLeft--;
-        } 
-        else {
-            correctOrder.enqueue(p);
-            trainPassengers.dequeue();
-            i++;
-        }
+    int stationIndex = s.getStationNumber();
+    PassengerQueue &q = trainPassengers[stationIndex];
+    int n = q.size();
+    for (int i = 0; i < n; i++) {
+        Passenger p = q.front();
+        q.dequeue();
+        log << "Passenger " << p.getId();
+        log << " left train at station " << s.getStationName() << "\n";
     }
-    sortPassengerQueue(correctOrder);
 }
 
 /*
- * name:      sortPassengerQueue
- * purpose:   sorts the train's PassengerQueue by endStation(lowest to highest)
- * arguments: PassengerQueue correctOrder to reorder the train's PassengerQueue
- * returns:   nothing
+ * name:      compareById
+ * purpose:   compares two Passengers by their ID for sorting
+ * arguments: Passenger& p0 and Passenger& p1 to compare id indexes
+ * returns:   true if p0's ID is greater than p1's ID, false otherwise
  * effects:   none
  * other:     none
  */
-void Train::sortPassengerQueue(PassengerQueue correctOrder) {
-    //2nd PassengerQueue to store original PassengerQueue without restored
-    //passengers
-    PassengerQueue correctOrder2;
-    //reads passengers to train's PassengerQueue in correct order(end station)
-    while (correctOrder.size() > 0) {
-        int lowestEndStation = getLowestStation(correctOrder);
-        //finds passenger at lowest station index and adds it to 
-        //trainPassengers, stores rest of Passengers in second PassengerQueue
-        while (correctOrder.size() > 0) {
-            if (correctOrder.front().getEndingStation() == lowestEndStation) {
-                trainPassengers.enqueue(correctOrder.front());
-            } 
-            else {
-                correctOrder2.enqueue(correctOrder.front());
-            }
-            correctOrder.dequeue();
-        }
-        //restore remaining for next traversal
-        while (correctOrder2.size() > 0) {
-            correctOrder.enqueue(correctOrder2.front());
-            correctOrder2.dequeue();
-        }
-    }
+bool Train::compareById(Passenger& p0, Passenger& p1) {
+    return p0.getId() > p1.getId();
 }
 
 /*
- * name:      getLowestStation
- * purpose:   gets the lowest station index in a PassengerQueue
- * arguments: PassengerQueue pq to find lowest station index in
- * returns:   nothing
- * effects:   none
- * other:     none
- */
-int Train::getLowestStation(PassengerQueue pq) {
-    if (pq.size() == 0) {
-        return -1;
-    }
-    int lowestEndStation = pq.front().getEndingStation();
-    pq.dequeue();
-    while (pq.size() > 0) {
-        if (pq.front().getEndingStation() < lowestEndStation) {
-            lowestEndStation = pq.front().getEndingStation();
-        }
-        pq.dequeue();
-    }
-    return lowestEndStation;
-}
-
-/*
- * name:      unloadPassengers
- * purpose:   unloads Passengers at the new station
+ * name:      loadPassengers
+ * purpose:   loads Passengers at the new station
  * arguments: Station s to load Passengers from its queue
  * returns:   nothing
  * effects:   none
@@ -121,8 +74,28 @@ void Train::loadPassengers(Station &s) {
     int n = s.getQueueSize();
     for (int i = 0; i < n; i++) {
         Passenger p = s.getFirstPassenger();
-        trainPassengers.enqueue(p);
         s.dequeue();
+        trainPassengers[p.getEndingStation()].enqueue(p);
+    }
+    // Sort each queue by ascending ID
+    for (auto &queue : trainPassengers) {
+        if (queue.size() <= 1) {
+            continue;
+        }
+        std::vector<Passenger> temp;\
+        //adds passengers to tep vector to sort
+        while (queue.size() > 0) {
+            temp.push_back(queue.front());
+            queue.dequeue();
+        }
+        //uses vector sort operation to sort each endStation passengers by ID
+        std::sort(temp.begin(), temp.end(), [](Passenger &a, Passenger &b) {
+            return a.getId() < b.getId();
+        });
+        //returns passengers to queue in correct order
+        for (auto &p : temp) {
+            queue.enqueue(p);
+        }
     }
 }
 
@@ -136,6 +109,25 @@ void Train::loadPassengers(Station &s) {
  */
 void Train::print(std::ostream &output) {
     output << "Passengers on the train: {";
-    trainPassengers.print(output); 
+    for (int i = 0; i < trainPassengers.size(); i++) {
+        trainPassengers[i].print(output);
+    } 
     output << "}" << std::endl;
+}
+
+/*
+ * name:      ~Train
+ * purpose:   clears train's PassengerQueues
+ * arguments: none
+ * returns:   nothing
+ * effects:   none
+ * other:     nothing
+ */
+Train::~Train() {
+    // Clear all queues
+    for (size_t i = 0; i < trainPassengers.size(); i++) {
+        while (trainPassengers[i].size() > 0) {
+            trainPassengers[i].dequeue();
+        }
+    }
 }
