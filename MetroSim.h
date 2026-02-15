@@ -46,6 +46,8 @@ private:
     int currentPassengerID;
     int currentStationIndex;
     int maxStationIndex;
+    //private helper function
+    Passenger createPassenger(int startStation, int endStation);
 };
 
 #endif

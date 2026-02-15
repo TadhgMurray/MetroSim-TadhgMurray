@@ -98,9 +98,23 @@ void MetroSim::addPassenger(std::string command) {
     int endStationIndex;
     //gets start and end station from istringstream instance
     iss >> startStationIndex >> endStationIndex;
-    Passenger p(currentPassengerID, startStationIndex, endStationIndex);
-    stationList[startStationIndex].addPassenger(p);
+    Passenger p = createPassenger(startStationIndex, endStationIndex);
+    stationList[start].addPassenger(p);
+}
+
+/*
+ * name:      createPassenger
+ * purpose:   creates passenger
+ * arguments: int startStation that passenger enters from, int endStation that
+ * passenger exits from
+ * returns:   none
+ * effects:   none
+ * other:     bug: if startStationIndex is incorrect program crashes
+ */
+Passenger MetroSim::createPassenger(int startStation, int endStation) {
+    Passenger p(currentPassengerID, start, end);
     currentPassengerID++;
+    return p;
 }
 
 /*
@@ -114,9 +128,9 @@ void MetroSim::addPassenger(std::string command) {
 void MetroSim::moveTrain(std::ostream &output) {
     //std:: ostringstream log to put unloading passenger info into
     std::ostringstream exitLog;
-    //loads people into train before leaving station
+    //loads people into train before leaving station, erases passengers
+    //from station
     train1.loadPassengers(stationList[currentStationIndex]);
-    stationList[currentStationIndex].erasePassengers();
     //unloads immediately after entering new station
     currentStationIndex++;
     //loops around stations if necessary
