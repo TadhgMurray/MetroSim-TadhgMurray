@@ -21,8 +21,8 @@
 using namespace std;
 
 int readStations(MetroSim *sim, char *argv[]);
-void readInput(MetroSim *sim, int argc, char *argv[]);
-void runInputLoop(MetroSim *sim, std::istream &in);
+void readInput(MetroSim *sim, int argc, char *argv[], std::ostream &out);
+void runInputLoop(MetroSim *sim, std::istream &in, std::ostream &out);
 
 /*
  * name:      main
@@ -37,7 +37,12 @@ int main(int argc, char *argv[])
 {
     MetroSim sim;
     readStations(&sim, argv);
-    readInput(&sim, argc, argv);
+    std::ofstream outFile(argv[2]);
+    if (not outFile.is_open()) {
+        std::cerr << "Error: could not open file " << argv[1];
+        return EXIT_FAILURE;
+    }
+    readInput(&sim, argc, argv, outFile);
     return 0;
 }
 
@@ -71,12 +76,13 @@ int readStations(MetroSim *sim, char *argv[]) {
  * name:      readInput
  * purpose:   reads user input either from given file or the console
  * arguments: MetroSim *sim to run the inputs, int argc to check if commands
- * from console or file, char *argv[] to read commands from file if given
+ * from console or file, char *argv[] to read commands from file if given,
+ * std::ostream &out to write output into
  * returns:   none
  * effects:   none
  * other:     none
  */
-void readInput(MetroSim *sim, int argc, char *argv[]) {
+void readInput(MetroSim *sim, int argc, char *argv[], std::ostream &out) {
     std::ifstream file;
     std::istream *in = &std::cin;
     if (argc > 3) {
@@ -87,7 +93,7 @@ void readInput(MetroSim *sim, int argc, char *argv[]) {
         }
         in = &file;
     }
-    runInputLoop(sim, *in);
+    runInputLoop(sim, *in, out);
     std::cout << "Thanks for playing MetroSim. Have a nice day!" << std::endl;
 }
 
@@ -95,12 +101,13 @@ void readInput(MetroSim *sim, int argc, char *argv[]) {
  * name:      runInputLoop
  * purpose:   reads user input for each turn
  * arguments: MetroSim *sim to run the commands,
- * std::istream &in to read input from the user/file
+ * std::istream &in to read input from the user/file, stdLLostream &out
+ * to write output into
  * returns:   none
  * effects:   none
  * other:     none
  */
-void runInputLoop(MetroSim *sim, std::istream &in) {
+void runInputLoop(MetroSim *sim, std::istream &in, std::ostream &out) {
     std::string line;
     //prints out simulation for the first time
     sim->printCurrentSimulation();
@@ -118,7 +125,7 @@ void runInputLoop(MetroSim *sim, std::istream &in) {
         }
         else if(line == "m m") {
             std::ostringstream exit;
-            sim->moveTrain(exit);
+            sim->moveTrain(out);
         }
         sim->printCurrentSimulation();
     }
