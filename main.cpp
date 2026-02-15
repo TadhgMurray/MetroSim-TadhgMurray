@@ -36,8 +36,12 @@ void runInputLoop(MetroSim *sim, std::istream &in, std::ostream &out);
 int main(int argc, char *argv[])
 {
     MetroSim sim;
-    readStations(&sim, argv);
-    readInput(&sim, argc, argv);
+    if (readStations(&sim, argv) != 0) {
+        return EXIT_FAILURE;
+    }
+    if (readInput(&sim, argc, argv) != 0) {
+        return EXIT_FAILURE;
+    }
     return 0;
 }
 
@@ -88,7 +92,7 @@ int readInput(MetroSim *sim, int argc, char *argv[]) {
         file.open(argv[3]);
         if (not file.is_open()) {
             std::cerr << "Error: could not open file " << argv[3] << std::endl;
-            return 0;
+            return EXIT_FAILURE;
         }
         in = &file;
     }
